@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Board>
+
+<a asp-controller="Board" asp-action="Create" class="btn btn-primary mb-2 float-end">게시글 작성</a>
+
+<table class="table">
+    <thead class="table table-primary">
+        <tr>
+            <th scope="col">@Html.DisplayNameFor(m => m.Number)</th>
+            <th scope="col">@Html.DisplayNameFor(m => m.Title)</th>
+            <th scope="col">@Html.DisplayNameFor(m => m.CreateDate)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Number</td>
+                <td>@item.Title</td>
+                <td>@item.CreateDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
