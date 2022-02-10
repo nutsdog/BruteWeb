@@ -1,13 +1,14 @@
-﻿@model IEnumerable<Board>
+﻿@model DisplayList<Board>
 
+<select asp-items=""
 <a asp-controller="Board" asp-action="Create" class="btn btn-primary mb-2 float-end">게시글 작성</a>
 
-<table class="table">
-    <thead class="table table-primary">
+<table class="table table-borderless border-bottom">
+    <thead class="border-top border-bottom">
         <tr>
-            <th scope="col">@Html.DisplayNameFor(m => m.Number)</th>
-            <th scope="col">@Html.DisplayNameFor(m => m.Title)</th>
-            <th scope="col">@Html.DisplayNameFor(m => m.CreateDate)</th>
+            <th scope="col">@Html.DisplayNameFor(m => m[0].Number)</th>
+            <th scope="col">@Html.DisplayNameFor(m => m[0].Title)</th>
+            <th scope="col">@Html.DisplayNameFor(m => m[0].CreateDate)</th>
         </tr>
     </thead>
     <tbody>
@@ -21,3 +22,29 @@
         }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : string.Empty;
+    var nextDisabled = !Model.HasNextPage ? "disabled" : string.Empty;
+}
+
+<div class="btn-toolbar justify-content-center">
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageIndex - 1)"
+       class="btn btn-default @prevDisabled">
+        이전
+    </a>
+
+    <div class="btn-group">
+        @for(var i = 1; i <= Model.TotalPages; i++)
+        {
+            <a asp-action="Index" asp-route-page="@i" class="btn btn-secondary">@i</a>
+        }
+    </div>
+
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageIndex + 1)"
+       class="btn btn-default @nextDisabled">
+        다음
+    </a>
+</div>

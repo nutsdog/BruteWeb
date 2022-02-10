@@ -1,5 +1,8 @@
 ﻿using BruteWeb.DataAccess;
+using BruteWeb.Models;
+using BruteWeb.Utillity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BruteWeb.Controllers
 {
@@ -12,24 +15,52 @@ namespace BruteWeb.Controllers
             _db = db;
         }
 
-        public ActionResult Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            return View(_db.Boards?.AsEnumerable());
+
+            return View(await DisplayList<Board>.CreateListAsync(_db.Boards.AsNoTracking(), page ?? 1, 3));
         }
 
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
             return View();
         }
 
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(Board obj)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            await _db.Boards.AddAsync(obj);
+            await _db.SaveChangesAsync();
+
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        public IActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -41,33 +72,14 @@ namespace BruteWeb.Controllers
             }
         }
 
-        public ActionResult Edit(int id)
+        public IActionResult Delete(int id)
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult Delete(int id, IFormCollection collection)
         {
             try
             {

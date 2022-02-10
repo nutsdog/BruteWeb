@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BruteWeb.DataAccess\BruteWeb.DataAccess.csproj" />
+    <ProjectReference Include="..\BruteWeb.Utillity\BruteWeb.Utillity.csproj" />
   </ItemGroup>
 
 </Project>
