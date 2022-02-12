@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BruteWeb.Models;
+using BruteWeb.Utillity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BruteWeb.Models.ViewModels
+#nullable disable
+
+namespace BruteWeb.ViewModels
 {
-    internal class BoardIndexViewModel
+    public class BoardIndexViewModel
     {
+        public IEnumerable<SelectListItem> SelectListItems { get; set; }
+
+        public DisplayList<Board> DisplayItems { get; set; }
     }
 }

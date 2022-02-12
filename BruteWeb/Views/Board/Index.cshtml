@@ -1,49 +1,98 @@
 ﻿@model DisplayList<Board>
 
-<a asp-controller="Board" asp-action="Create" class="btn btn-primary mb-2 float-end">게시글 작성</a>
-
-<table class="table table-borderless border-bottom">
-    <thead class="border-top border-bottom">
-        <tr>
-            <th scope="col">@Html.DisplayNameFor(m => m[0].Number)</th>
-            <th scope="col">@Html.DisplayNameFor(m => m[0].Title)</th>
-            <th scope="col">@Html.DisplayNameFor(m => m[0].CreateDate)</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var item in Model)
-        {
-            <tr>
-                <td>@item.Number</td>
-                <td>@item.Title</td>
-                <td>@item.CreateDate</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : string.Empty;
-    var nextDisabled = !Model.HasNextPage ? "disabled" : string.Empty;
-}
-
-<div class="btn-toolbar justify-content-center">
-    <a asp-action="Index"
-       asp-route-page="@(Model.PageIndex - 1)"
-       class="btn btn-default @prevDisabled">
-        이전
-    </a>
-
-    <div class="btn-group">
-        @for(var i = 1; i <= Model.TotalPages; i++)
-        {
-            <a asp-action="Index" asp-route-page="@i" class="btn btn-secondary">@i</a>
-        }
+<form asp-action="Index">
+    <div class="row">
+        <div class="col-1">
+            <select id="dropDown" name="pageSize" asp-for="PageSize" class="form-select" onchange="document.getElementById('btnSubmit').click();">
+                <option>5</option>
+                <option>10</option>
+                <option>20</option>
+                <option>40</option>
+            </select>
+        </div>
+        <div class="col-9 mb-1">
+            <label class="p-2 bd-highlight">검색어</label><input type="text" class="p-2 bd-highlight form-control" />
+        </div>
+        <div class="col-2">
+            <a asp-controller="Board" asp-action="Create" class="btn btn-primary mb-2 float-end">게시글 작성</a>
+        </div>
     </div>
 
-    <a asp-action="Index"
-       asp-route-page="@(Model.PageIndex + 1)"
-       class="btn btn-default @nextDisabled">
-        다음
-    </a>
-</div>
+    <table class="table table-borderless border-bottom">
+        <thead class="border-top border-bottom">
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(m => m[0].Number)</th>
+                <th scope="col">@Html.DisplayNameFor(m => m[0].Title)</th>
+                <th scope="col">@Html.DisplayNameFor(m => m[0].CreateDate)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.Number</td>
+                    <td>@item.Title</td>
+                    <td>@item.CreateDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : string.Empty;
+        var nextDisabled = !Model.HasNextPage ? "disabled" : string.Empty;
+    }
+
+    <div id="indexDiv" class="btn-toolbar justify-content-center">
+        <a asp-action="Index" asp-route-page="@(Model.PageIndex - 1)" asp-route-pageSize="temp" id="testA" class="btn btn-default @prevDisabled">이전</a>
+
+        <div class="btn-group">
+            @for(var i = 1; i <= Model.TotalPages; i++)
+            {
+                <a asp-action="Index" asp-route-page="@i" asp-route-pageSize="temp" class="btn btn-secondary">@i</a>
+            }
+        </div>
+
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageIndex + 1)"
+           asp-route-pageSize="temp"
+           class="btn btn-default @nextDisabled">
+            다음
+        </a>
+    </div>
+
+    <input id="btnSubmit" hidden type="submit" />
+</form>
+
+
+@section scripts{
+    <script>
+        let pageSize = $("#dropDown").val();
+
+        $("table, a").click(function (e){
+
+            e.preventDefault();
+
+            let url = $(this).attr("href");
+                
+            url = url.replace("temp", pageSize);
+
+            window.location.href = url;
+        })
+    </script>
+@*<script>
+    $("#dropDown").change(function (){
+    $.ajax({
+    type : "Get",
+    url : "/Board/ShowDisplayList?pageSize=" + $(this).val(),
+    success : function (data){
+    $("#partialContainer").html("");
+    $("#partialContainer").html(data);
+    },
+    error : function (response){
+    console.log(response.responseText);
+    }
+    })
+    })
+    </script>*@
+}

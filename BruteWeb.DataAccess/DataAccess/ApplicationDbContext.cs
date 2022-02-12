@@ -1,6 +1,8 @@
 ﻿using BruteWeb.Models;
 using Microsoft.EntityFrameworkCore;
 
+#nullable disable
+
 namespace BruteWeb.DataAccess
 {
     public class ApplicationDbContext : DbContext

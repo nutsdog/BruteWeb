@@ -1,7 +1,9 @@
 ﻿using BruteWeb.DataAccess;
 using BruteWeb.Models;
 using BruteWeb.Utillity;
+using BruteWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BruteWeb.Controllers
@@ -15,10 +17,9 @@ namespace BruteWeb.Controllers
             _db = db;
         }
 
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? pageSize, int? page)
         {
-
-            return View(await DisplayList<Board>.CreateListAsync(_db.Boards.AsNoTracking(), page ?? 1, 3));
+            return View(await DisplayList<Board>.CreateListAsync(_db.Boards.AsNoTracking(), page ?? 1, pageSize ?? 5));
         }
 
         public IActionResult Details(int id)

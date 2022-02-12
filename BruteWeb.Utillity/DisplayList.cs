@@ -1,5 +1,4 @@
-﻿using BruteWeb.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace BruteWeb.Utillity
 {
@@ -7,19 +6,22 @@ namespace BruteWeb.Utillity
     {
         public int PageIndex { get; private set; }
         public int TotalPages { get; private set; }
+        public int PageSize { get; private set; }
 
-        public DisplayList(List<T> items, int count, int pageIndex, int pageSize)
+        public DisplayList(List<T> items, int count, int pageIndex, int pageSize = 5)
         {
             AddRange(items);
 
             PageIndex = pageIndex;
-            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+            PageSize = pageSize;
+
+            TotalPages = (int)Math.Ceiling(count / (double)PageSize);
         }
 
         public bool HasPreviousPage => PageIndex > 1;
         public bool HasNextPage => PageIndex < TotalPages;
 
-        public static async Task<DisplayList<T>> CreateListAsync(IQueryable<T> sources, int pageIndex, int pageSize)
+        public static async Task<DisplayList<T>> CreateListAsync(IQueryable<T> sources, int pageIndex, int pageSize = 5)
         {
             var count = await sources.CountAsync();
             var items = await sources.OrderByDescending(m => m)
