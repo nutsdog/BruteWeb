@@ -17,9 +17,18 @@ namespace BruteWeb.Controllers
             _db = db;
         }
 
-        public async Task<IActionResult> Index(int? pageSize, int? page)
+        public async Task<IActionResult> Index(int? pageSize, int? page, string? seachString)
         {
-            return View(await DisplayList<Board>.CreateListAsync(_db.Boards.AsNoTracking(), page ?? 1, pageSize ?? 5));
+            ViewData["seachString"] = seachString;
+
+            var boards = _db.Boards.AsQueryable();
+
+            if(!string.IsNullOrWhiteSpace(seachString))
+            {
+                boards = _db.Boards.Where(m => m.Title.Contains(seachString));
+            }
+
+            return View(await DisplayList<Board>.CreateListAsync(boards.AsNoTracking(), page ?? 1, pageSize ?? 5));
         }
 
         public IActionResult Details(int id)

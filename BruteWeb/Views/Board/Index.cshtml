@@ -10,8 +10,18 @@
                 <option>40</option>
             </select>
         </div>
-        <div class="col-9 mb-1">
-            <label class="p-2 bd-highlight">검색어</label><input type="text" class="p-2 bd-highlight form-control" />
+        <div class="col-9">
+            <div class="row row-cols-6">
+                <div class="col-1">
+                    <label class="col-form-label">검색어</label>
+                </div>
+                <div class="col-3">
+                    <input type="text" name="seachString" class="form-control" value="@ViewData["seachString"]"/>
+                </div>
+                <div class="col-2">
+                    <input type="submit" class="btn btn-secondary" value="검색" />
+                </div>
+            </div>
         </div>
         <div class="col-2">
             <a asp-controller="Board" asp-action="Create" class="btn btn-primary mb-2 float-end">게시글 작성</a>
@@ -44,21 +54,16 @@
     }
 
     <div id="indexDiv" class="btn-toolbar justify-content-center">
-        <a asp-action="Index" asp-route-page="@(Model.PageIndex - 1)" asp-route-pageSize="temp" id="testA" class="btn btn-default @prevDisabled">이전</a>
+        <a asp-action="Index" asp-route-page="@(Model.PageIndex - 1)" asp-route-pageSize="temp" asp-route-seachString="@ViewData["seachString"]" id="testA" class="btn btn-default @prevDisabled">이전</a>
 
         <div class="btn-group">
             @for(var i = 1; i <= Model.TotalPages; i++)
             {
-                <a asp-action="Index" asp-route-page="@i" asp-route-pageSize="temp" class="btn btn-secondary">@i</a>
+                <a asp-action="Index" asp-route-page="@i" asp-route-pageSize="temp" asp-route-seachString="@ViewData["seachString"]" class="btn btn-secondary">@i</a>
             }
         </div>
 
-        <a asp-action="Index"
-           asp-route-page="@(Model.PageIndex + 1)"
-           asp-route-pageSize="temp"
-           class="btn btn-default @nextDisabled">
-            다음
-        </a>
+        <a asp-action="Index" asp-route-page="@(Model.PageIndex + 1)" asp-route-pageSize="temp" asp-route-seachString="@ViewData["seachString"]" class="btn btn-default @nextDisabled">다음</a>
     </div>
 
     <input id="btnSubmit" hidden type="submit" />
