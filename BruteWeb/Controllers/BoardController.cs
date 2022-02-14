@@ -1,9 +1,7 @@
 ﻿using BruteWeb.DataAccess;
 using BruteWeb.Models;
 using BruteWeb.Utillity;
-using BruteWeb.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BruteWeb.Controllers
@@ -17,7 +15,7 @@ namespace BruteWeb.Controllers
             _db = db;
         }
 
-        public async Task<IActionResult> Index(int? pageSize, int? page, string? seachString)
+        public async Task<IActionResult> Index(int? pageSize, int? page, string? seachString, IFormCollection form)
         {
             ViewData["seachString"] = seachString;
 
@@ -63,23 +61,36 @@ namespace BruteWeb.Controllers
             }
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            if(id <= 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var model = await _db.Boards.FirstOrDefaultAsync(m => m.Number == id);
+
+            if(model == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int? id, Board model)
         {
-            try
+            if(id != model.Number)
             {
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+
+            _db.Boards.Update(model);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Delete(int id)

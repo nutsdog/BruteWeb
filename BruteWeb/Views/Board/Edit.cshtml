@@ -1,0 +1,17 @@
+﻿@model Board
+
+<form method="post">
+    <input type="hidden" asp-for="Number" />
+    <div class="mb-2">
+        <label asp-for="Title" class="form-label"></label>
+        <input type="text" asp-for="Title" class="form-control" placeholder="제목을 입력해주세요."/>
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="mb-2">
+        <label asp-for="Contents" class="form-label"></label>
+        <textarea asp-for="Contents" class="form-control" placeholder="내용을 입력해주세요."></textarea>
+        <span asp-validation-for="Contents" class="text-danger"></span>
+    </div>
+
+    <input type="submit" value="수정" asp-controller="Board" asp-action="Edit" class="btn btn-primary" />
+</form>

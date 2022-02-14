@@ -14,7 +14,7 @@ namespace BruteWeb.Utillity
 
             PageIndex = pageIndex;
             PageSize = pageSize;
-
+            
             TotalPages = (int)Math.Ceiling(count / (double)PageSize);
         }
 

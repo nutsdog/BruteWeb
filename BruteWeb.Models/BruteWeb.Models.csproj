@@ -14,4 +14,8 @@
     <ProjectReference Include="..\BruteWeb.Utillity\BruteWeb.Utillity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
 </Project>
