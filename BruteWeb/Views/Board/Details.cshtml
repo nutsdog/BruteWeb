@@ -1,0 +1,17 @@
+﻿@model Board
+
+<form method="post">
+    <div class="border border-light">
+        <input type="hidden" asp-for="Number" />
+        <div class="text-center border-bottom m-3">
+            <label asp-for="Title" class="form-label m-2"><h2>@Model.Title</h2></label>
+        </div>
+        <div class="mb-2">
+            <label asp-for="Contents" class="form-label"></label>
+            <textarea asp-for="Contents" class="form-control" disabled placeholder="내용을 입력해주세요."></textarea>
+        </div>
+
+        <a type="submit" asp-controller="Board" asp-action="Edit" asp-route-id="@Model.Number" class="btn btn-primary">수정</a>
+        <input type="submit" value="삭제" asp-controller="Board" asp-action="Delete" class="btn btn-primary" />
+    </div>
+</form>

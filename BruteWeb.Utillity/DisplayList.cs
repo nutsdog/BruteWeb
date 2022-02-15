@@ -8,6 +8,9 @@ namespace BruteWeb.Utillity
         public int TotalPages { get; private set; }
         public int PageSize { get; private set; }
 
+        public bool HasPreviousPage => PageIndex > 1;
+        public bool HasNextPage => PageIndex < TotalPages;
+        
         public DisplayList(List<T> items, int count, int pageIndex, int pageSize = 5)
         {
             AddRange(items);
@@ -17,10 +20,7 @@ namespace BruteWeb.Utillity
             
             TotalPages = (int)Math.Ceiling(count / (double)PageSize);
         }
-
-        public bool HasPreviousPage => PageIndex > 1;
-        public bool HasNextPage => PageIndex < TotalPages;
-
+        
         public static async Task<DisplayList<T>> CreateListAsync(IQueryable<T> sources, int pageIndex, int pageSize = 5)
         {
             var count = await sources.CountAsync();

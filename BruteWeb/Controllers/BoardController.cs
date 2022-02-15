@@ -29,9 +29,11 @@ namespace BruteWeb.Controllers
             return View(await DisplayList<Board>.CreateListAsync(boards.AsNoTracking(), page ?? 1, pageSize ?? 5));
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var model = await _db.Boards.FirstOrDefaultAsync(m => m.Number == id);
+
+            return View(model);
         }
 
         public IActionResult Create()
@@ -61,7 +63,7 @@ namespace BruteWeb.Controllers
             }
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, IFormCollection values)
         {
             if(id <= 0)
             {
@@ -100,16 +102,12 @@ namespace BruteWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Delete(Board model)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _db.Boards.Remove(model);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
