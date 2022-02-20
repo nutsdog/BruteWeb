@@ -1,6 +1,5 @@
 ﻿using BruteWeb.DataAccess;
 using BruteWeb.Models;
-using BruteWeb.Models.ViewModels;
 using BruteWeb.Utillity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -46,9 +45,9 @@ namespace BruteWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Details(Comment model)
         {
-            return View(model);
+            return View(model); 
         }
-
+         
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateComment(Board model, string CommentContent)
