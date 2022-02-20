@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BruteWeb.Models
 {
@@ -6,7 +7,7 @@ namespace BruteWeb.Models
     {
         [Key]
         [Display(Name = "번호")]
-        public int Number { get; set; }
+        public int BoardId { get; set; }
         [Display(Name = "제목")]
         [MaxLength(50)]
         [Required(ErrorMessage = "제목을 입력하세요.")]
@@ -19,5 +20,7 @@ namespace BruteWeb.Models
         [Display(Name = "생성일")]
         public DateTime CreateDate { get; set; } = DateTime.Now;
         public DateTime? ModifyDate { get; set; }
+
+        public IEnumerable<Comment>? Comments { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BruteWeb.DataAccess;
 using BruteWeb.Models;
+using BruteWeb.Models.ViewModels;
 using BruteWeb.Utillity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,9 +32,36 @@ namespace BruteWeb.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var model = await _db.Boards.FirstOrDefaultAsync(m => m.Number == id);
+            var model = await _db.Boards.AsQueryable().Include(m => m.Comments).FirstOrDefaultAsync(m => m.BoardId == id);
+
+            if(model is null)
+            {
+                return NotFound();
+            }
 
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Details(Comment model)
+        {
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateComment(Board model, string CommentContent)
+        {
+            _db.Comments.Add(new Comment()
+            {
+                Contents = CommentContent,
+                BoardForeignKey = model.BoardId
+            });
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new { Id = model.BoardId });
         }
 
         public IActionResult Create()
@@ -63,14 +91,14 @@ namespace BruteWeb.Controllers
             }
         }
 
-        public async Task<IActionResult> Edit(int id, IFormCollection values)
+        public async Task<IActionResult> Edit(int id)
         {
             if(id <= 0)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            var model = await _db.Boards.FirstOrDefaultAsync(m => m.Number == id);
+            var model = await _db.Boards.FirstOrDefaultAsync(m => m.BoardId == id);
 
             if(model == null)
             {
@@ -84,7 +112,7 @@ namespace BruteWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int? id, Board model)
         {
-            if(id != model.Number)
+            if(id != model.BoardId)
             {
                 return RedirectToAction(nameof(Index));
             }

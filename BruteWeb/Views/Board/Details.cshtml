@@ -1,17 +1,44 @@
 ﻿@model Board
 
 <form method="post">
-    <div class="border border-light">
-        <input type="hidden" asp-for="Number" />
-        <div class="text-center border-bottom m-3">
-            <label asp-for="Title" class="form-label m-2"><h2>@Model.Title</h2></label>
-        </div>
-        <div class="mb-2">
-            <label asp-for="Contents" class="form-label"></label>
-            <textarea asp-for="Contents" class="form-control" disabled placeholder="내용을 입력해주세요."></textarea>
+    <div class="border border-light p-2">
+        <input type="hidden" asp-for="BoardId" />
+        <div class="m-3 mb-0">
+            <label class="form-label m-2"><h2>@Model.Title</h2></label>
+            <div>
+                <div>
+                </div>
+                <div>
+                    <label class="form-label">@Model.CreateDate.ToString("yyyy.MM.dd.")</label>
+                </div>
+            </div>
         </div>
 
-        <a type="submit" asp-controller="Board" asp-action="Edit" asp-route-id="@Model.Number" class="btn btn-primary">수정</a>
+        <div class="border-top border-bottom m-3 mt-0 p-3 ">
+            <label class="form-label">@Model.Contents</label>
+            @*<textarea asp-for="Contents" class="form-control" disabled placeholder="내용을 입력해주세요."></textarea>*@
+        </div>
+
+        @{
+            if(Model.Comments is not null)
+            {
+                @foreach(var item in Model.Comments)
+                {
+                    <div class="border-bottom m-3 mt-0 p-2 pt-0">
+                        <label class="form-label">@item.Contents</label>
+                    </div>
+                }
+            }
+        }
+
+        <div class="m-3 text-end">
+            <textarea class="form-control" name="CommentContent"></textarea>
+            <input class="btn btn-secondary mt-1" type="submit" asp-controller="Board" asp-action="CreateComment" value="등록" />
+            @*<input class="btn btn-secondary mt-1" type="submit" asp-controller="Board" asp-action="CreateComment" value="등록" />*@
+        </div>
+    </div>
+    <div class="m-1 ms-0">
+        <a type="submit" asp-controller="Board" asp-action="Edit" asp-route-id="@Model.BoardId" class="btn btn-primary">수정</a>
         <input type="submit" value="삭제" asp-controller="Board" asp-action="Delete" class="btn btn-primary" />
     </div>
 </form>

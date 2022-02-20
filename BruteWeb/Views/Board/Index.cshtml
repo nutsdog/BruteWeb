@@ -33,7 +33,7 @@
         <table class="table table-borderless table-hover">
             <thead class="border-top border-bottom">
                 <tr>
-                    <th class="text-center" scope="col">@Html.DisplayNameFor(m => m[0].Number)</th>
+                    <th class="text-center" scope="col">@Html.DisplayNameFor(m => m[0].BoardId)</th>
                     <th class="text-center" scope="col">@Html.DisplayNameFor(m => m[0].Title)</th>
                     <th class="text-center" align="center" scope="col">@Html.DisplayNameFor(m => m[0].CreateDate)</th>
                     <th></th>
@@ -43,11 +43,11 @@
                 @foreach(var item in Model)
                 {
                     <tr class="border-bottom">
-                        <td class="text-center align-middle" width="10%">@item.Number</td>
-                        <td class="text-center align-middle" width="40%"><a class="btn" asp-controller="Board" asp-action="Details" asp-route-id="@item.Number">@item.Title</a></td>
+                        <td class="text-center align-middle" width="10%">@item.BoardId</td>
+                        <td class="text-center align-middle" width="40%"><a class="btn" asp-controller="Board" asp-action="Details" asp-route-id="@item.BoardId">@item.Title</a></td>
                         <td class="text-center align-middle" width="30%">@item.CreateDate</td>
                         <td class="text-center" width="20%">
-                            <a class="btn btn-secondary" asp-controller="Board" asp-action="Edit" asp-route-id="@item.Number">수정</a>
+                            <a class="btn btn-secondary" asp-controller="Board" asp-action="Edit" asp-route-id="@item.BoardId">수정</a>
                         </td>
                     </tr>
                 }
