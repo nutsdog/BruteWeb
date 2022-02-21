@@ -2,15 +2,15 @@
 
 <form method="post">
     <div class="mb-2">
-        <label asp-for="Id" class="form-label"></label>
-        <input type="text" asp-for="Id" class="form-control" placeholder="아이디를 입력해주세요."/>
-        <span asp-validation-for="Id" class="text-danger"></span>
+        <label asp-for="MemberId" class="form-label"></label>
+        <input type="text" asp-for="MemberId" class="form-control" placeholder="아이디를 입력해주세요."/>
+        <span asp-validation-for="MemberId" class="text-danger"></span>
     </div>
     <div class="mb-2">
         <label asp-for="Password" class="form-label"></label>
         <input type="password" asp-for="Password" class="form-control" placeholder="비밀번호를 입력해주세요." />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
-
+    
     <input type="submit" value="가입" asp-controller="Board" asp-action="Edit" class="btn btn-primary" />
 </form>

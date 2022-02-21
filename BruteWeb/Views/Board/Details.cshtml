@@ -16,7 +16,6 @@
 
         <div class="border-top border-bottom m-3 mt-0 p-3 ">
             <label class="form-label">@Model.Contents</label>
-            @*<textarea asp-for="Contents" class="form-control" disabled placeholder="내용을 입력해주세요."></textarea>*@
         </div>
 
         @{
@@ -32,13 +31,18 @@
         }
 
         <div class="m-3 text-end">
-            <textarea class="form-control" name="CommentContent"></textarea>
-            <input class="btn btn-secondary mt-1" type="submit" asp-controller="Board" asp-action="CreateComment" value="등록" />
-            @*<input class="btn btn-secondary mt-1" type="submit" asp-controller="Board" asp-action="CreateComment" value="등록" />*@
+            <textarea class="form-control" name="CommentContent" placeholder="댓글을 입력하세요."></textarea>
+            <input class="btn btn-secondary mt-1" type="submit" value="등록" />
         </div>
     </div>
-    <div class="m-1 ms-0">
-        <a type="submit" asp-controller="Board" asp-action="Edit" asp-route-id="@Model.BoardId" class="btn btn-primary">수정</a>
-        <input type="submit" value="삭제" asp-controller="Board" asp-action="Delete" class="btn btn-primary" />
+
+    <div class="mt-2 row">
+        <div class="col-10">
+            <a type="submit" asp-controller="Board" asp-action="Edit" asp-route-id="@Model.BoardId" class="btn btn-primary">수정</a>
+            <input type="submit" value="삭제" asp-controller="Board" asp-action="Delete" class="btn btn-primary" />
+        </div>
+        <div class="col-2 text-end">
+            <a asp-controller="Board" asp-action="Index" class="btn btn-primary">목록</a>
+        </div>
     </div>
 </form>

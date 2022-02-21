@@ -19,14 +19,14 @@ namespace BruteWeb.Controllers
         {
             ViewData["seachString"] = seachString;
 
-            var boards = _db.Boards.AsQueryable();
+            var boards = _db.Boards.AsQueryable().AsNoTracking();
 
             if(!string.IsNullOrWhiteSpace(seachString))
             {
                 boards = _db.Boards.Where(m => m.Title.Contains(seachString));
             }
 
-            return View(await DisplayList<Board>.CreateListAsync(boards.AsNoTracking(), page ?? 1, pageSize ?? 5));
+            return View(await DisplayList<Board>.CreateListAsync(boards, page ?? 1, pageSize ?? 5));
         }
 
         public async Task<IActionResult> Details(int id)
@@ -38,19 +38,17 @@ namespace BruteWeb.Controllers
                 return NotFound();
             }
 
+            model.ViewCount++;
+
+            _db.Boards.Update(model);
+            await _db.SaveChangesAsync();
+
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Details(Comment model)
-        {
-            return View(model); 
-        }
-         
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateComment(Board model, string CommentContent)
+        public async Task<IActionResult> Details(Board model, string CommentContent)
         {
             _db.Comments.Add(new Comment()
             {

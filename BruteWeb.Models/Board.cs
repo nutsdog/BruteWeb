@@ -21,6 +21,9 @@ namespace BruteWeb.Models
         public DateTime CreateDate { get; set; } = DateTime.Now;
         public DateTime? ModifyDate { get; set; }
 
+        [Display(Name = "조회수")]
+        public int ViewCount { get; set; }
+
         public IEnumerable<Comment>? Comments { get; set; }
     }
 }

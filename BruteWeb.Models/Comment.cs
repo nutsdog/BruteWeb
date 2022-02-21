@@ -10,11 +10,12 @@ namespace BruteWeb.Models
         [Key]
         public int CommentId { get; set; }
         [Required]
+        [MaxLength(1000)]
         public string Contents { get; set; } = string.Empty;
         public DateTime CreateDate { get; set; } = DateTime.Now;
 
         public int BoardForeignKey { get; set; }
-        [ForeignKey("BoardForeignKey")]
+        [ForeignKey(nameof(BoardForeignKey))]
         public Board Board { get; set; }
     }
 }
